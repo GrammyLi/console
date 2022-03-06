@@ -1,19 +1,3 @@
-const e = (sel) => document.querySelector(sel);
-
-const log = console.log.bind(console);
-
-const isArray = function (o) {
-  return Array.isArray(o);
-};
-
-const isObject = function (o) {
-  return Object.prototype.toString.call(o) === "[object Object]";
-};
-
-const appendHtml = (element, html) => {
-  element.insertAdjacentHTML("beforeend", html);
-};
-
 const arrayProtoype = (n) => {
   const b = "&nbsp";
   // 两个空格
@@ -36,13 +20,20 @@ const arrayLine1 = (v) => {
   let right = "]";
   let eles = [];
   for (let i = 0; i < v.length; i++) {
-    if (isArray(v[i])) {
+    let ele = "";
+    let value = v[i];
+    if (isArray(value)) {
       // Array(2)
-      let ele = `Array(${v[i].length})`;
-      eles.push(ele);
+      ele = `Array(${v[i].length})`;
+    } else if (isObject(value)) {
+      ele = "{…}";
+      // TODO 代码需要优化
+    } else if (typeof value === "string") {
+      ele = `'${value}'`;
     } else {
-      eles.push(v[i]);
+      ele = value;
     }
+    eles.push(ele);
   }
   let center = eles.join("," + b);
   let r = left + center + right;
@@ -59,10 +50,16 @@ const arrayLine2 = (v, n) => {
   const lines = [];
   for (let i = 0; i < v.length; i++) {
     let line = "";
-    if (isArray(v[i])) {
-      line = bn + triangle + i + ":" + b2 + arrLog(v[i], n);
+    let value = v[i];
+    if (isArray(value)) {
+      line = bn + triangle + i + ":" + b2 + arrLog(value, n);
+    } else if (isObject(value)) {
+      line = bn + triangle + i + ":" + b2 + objLog(value, n);
+      // TODO 代码需要优化
+    } else if (isString(value)) {
+      line = bn + i + ":" + b2 + "'" + value + "'";
     } else {
-      line = bn + i + ":" + b2 + v[i];
+      line = bn + i + ":" + b2 + value;
     }
     lines.push(line);
   }
@@ -103,7 +100,6 @@ const arrLog = (v, n = 1) => {
 const templateArray = (value) => {
   return `
   <div class="g-log-item">
-    <div class="g-output"></div>
     <div class="g-log-unfold">▶</div>
     <span class="g-log-number">
       ${value}
@@ -115,7 +111,6 @@ const templateArray = (value) => {
 const templateObject = (value) => {
   return `
   <div class="g-log-item">
-    <div class="g-output"></div>
     <div class="g-log-unfold">▶</div>
     <span class="g-log-number">
       ${value}
@@ -137,11 +132,12 @@ const objectLine1 = (v) => {
   for (let i = 0; i < ks.length; i++) {
     let k = ks[i];
     let value = v[k];
+    let ele = "";
     if (isObject(value)) {
       ele = k + ": {…}";
     } else if (isArray(value)) {
       ele = `${k}: Array(${value.length})`;
-    } else if (typeof value === "string") {
+    } else if (isString(value)) {
       ele = `${k}: '${value}'`;
     } else {
       ele = `${k}: ${value}`;
@@ -176,22 +172,13 @@ const objectLine2 = (v, n) => {
     } else if (isArray(value)) {
       // arr: (3) [1, 3, 'str']
       line = bn + triangle + k + ":" + b2 + arrLog(value, n);
-    } else if (typeof value === "string") {
+    } else if (isString(value)) {
       line = bn + k + ":" + b2 + '"' + value + '"';
     } else {
       line = bn + k + ":" + b2 + value;
     }
     lines.push(line);
   }
-  // for (let i = 0; i < v.length; i++) {
-  //   let line = "";
-  //   if (isArray(v[i])) {
-  //     line = bn + triangle + i + ":" + b2 + arrLog(v[i], n);
-  //   } else {
-  //     line = bn + i + ":" + b2 + v[i];
-  //   }
-  //   lines.push(line);
-  // }
   const r = lines.join("</br>");
   return r;
 };
@@ -214,11 +201,12 @@ const objectProtoype = (v, n) => {
   const b2 = "&nbsp".repeat(2);
   const triangle = '<div class="g-log-unfold">▶</div>';
   // constructor: ƒ Object()
+  // TODO 需要优化代码
   return funcNames
-    .map(
-      (f) =>
-        `${bn}${b2}${triangle}${f}: f ${f === "constructor" ? "Object" : f}()`
-    )
+    .map((f) => {
+      const name = f === "constructor" ? "Object" : f;
+      return `${bn}${b2}${triangle}${f}: f ${name}()`;
+    })
     .join("</br>");
 };
 
@@ -275,20 +263,30 @@ const grammyConsole = () => {
   //     number: 123
   //   }
   // }
-  let v = {
-    name: "g-console",
-    num: 123,
-    bool: false,
-    obj: {
-      number: 1234,
-      str: "gl",
-      objinner: {
-        key: 90,
-        str: '1223'
-      }
+  // let v = {
+  //   name: "g-console",
+  //   num: 123,
+  //   bool: false,
+  //   obj: {
+  //     number: 1234,
+  //     str: "gl",
+  //     objinner: {
+  //       key: 90,
+  //       str: '1223'
+  //     }
+  //   },
+  //   arr: [1, 3, "str"],
+  // };
+  let v = [
+    12,
+    {
+      name: "g-console",
+      time: "2022",
+      num: 123,
     },
-    arr: [1, 3, "str"],
-  };
+    3456,
+    "grammy",
+  ];
   const ctn = e(".g-log-container");
   const r = unflodLog(v);
   appendHtml(ctn, r);
