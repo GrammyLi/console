@@ -21,8 +21,8 @@
             display: flex;
             color: rgb(255, 255, 255);
             background-color: transparent;
-            border-top: 1px solid rgba(128, 128, 128, 0.35);
-            border-bottom: 1px solid rgba(128, 128, 128, 0.35);
+            /* border-top: 1px solid rgba(128, 128, 128, 0.35);
+            border-bottom: 1px solid rgba(128, 128, 128, 0.35); */
             margin-top: -1px;
             margin-bottom: 0px;
             padding-left: 10px;
@@ -40,12 +40,24 @@
             /* transform: rotateZ(90deg); */
         }
 
+        .g-rotate-90 {
+            transform: rotateZ(90deg);
+            height: 26px;
+        }
+
         .g-log-number {
             /* color: rgb(153, 128, 255); */
             color: black;
             /* height: 26px; */
             line-height: 26px;
             /* margin-left: 16px; */
+        }
+
+        .g-hide {
+            display: none;
+        }
+        .g-show {
+            display: inline-block;
         }
     </style>
 </head>
@@ -54,6 +66,8 @@
     <div class="g-log-container">
     </div>
     <script src="./utils.js"></script>
+    <script src="./array.js"></script>
+    <script src="./object.js"></script>
     <script src="./main.js"></script>
 </body>
 
