@@ -27,3 +27,20 @@ const bindAll = (sel, name, cb) => {
     bindEvent(ele, name, cb)
   })
 }
+
+const templateItem = (type, layer, index, frontContent, endContent) => {
+  const l = index
+  const n = layer
+  const bn = '&nbsp'.repeat((n - 1))
+  return `
+      <div class="g-log-item g-item" data-n="${n}" data-type="${type}" data-i="${l}">
+        <div class="g-log-unfold">▶</div>
+        <div class="g-log-number g-log-${type}-${n}-${l}">
+          ${frontContent}
+        </div>
+        <div class="g-log-number g-log-backup-${type}-${n}-${l} g-hide">
+        ${endContent}
+        </div>
+      </div>
+      `
+}

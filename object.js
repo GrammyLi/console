@@ -33,80 +33,79 @@ name: "grammyli"
 name1: "grammy"
 name3: "g"
  */
-const objectLine2 = (v, n) => {
+const objectLine2 = (v, n, index) => {
   n += 1;
   const b = "&nbsp";
+  const type = 'object'
   // 两个空格
   const b2 = b.repeat(2);
   const bn = b.repeat((n - 1) * 2);
-  const triangle = '<div class="g-log-unfold">▶</div>';
   const lines = [];
   const ks = Object.keys(v);
   for (let i = 0; i < ks.length; i++) {
     let line = "";
     let k = ks[i];
     let value = v[k];
+    // TODO 代码待优化
     if (isObject(value)) {
-      line = bn + triangle + k + ":" + b2 + objLog(value, n);
+      let [r, l1] = objLog(value, n, i + 1);
+      let frontContent = k + ":"  + l1
+      let endContent = k + ':' + r
+      line = templateItem(type, n, i + 1, frontContent, endContent)
     } else if (isArray(value)) {
-      // arr: (3) [1, 3, 'str']
-      line = bn + triangle + k + ":" + b2 + arrLog(value, n);
+      let [r, l1] = arrLog(value, n, i + 1);
+      let frontContent = k + ":"  + l1
+      let endContent =  k + ':' + r
+      line = templateItem(type, n, i + 1, frontContent, endContent)
     } else if (isString(value)) {
-      line = bn + k + ":" + b2 + '"' + value + '"';
+      line = bn + k + ":" + b2 + '"' + value + '"' + '</br>';
     } else {
-      line = bn + k + ":" + b2 + value;
+      line = bn + k + ":" + b2 + value + '</br>';
     }
     lines.push(line);
   }
-  const r = lines.join("</br>");
+  const r = lines.join("");
   return r;
 };
 
 const objectLine3 = (v, n) => {
-  const b = "&nbsp";
-  // 两个空格
-  const bn = b.repeat(n - 1);
-  const t = ` <div class="g-log-unfold">▶</div>`;
-  return bn + t + "[[Prototype]]: Object";
+  n = n + 1
+  const index = Object.keys(v).length + 1
+  const type = 'object'
+  const l4 = objectProtoype(v, n)
+  let frontContent =  "[[Prototype]]: Object"
+  let endContent = `${frontContent}</br>${l4}`
+  let r =  templateItem(type, n, index, frontContent, endContent)
+  return r
 };
 
 const objectProtoype = (v, n) => {
-  const b = "&nbsp";
   // 两个空格
-  const bn = b.repeat((n - 1) * 2);
   const funcNames = Object.getOwnPropertyNames(Object.prototype).sort((a, b) =>
     a.localeCompare(b)
   );
-  const b2 = "&nbsp".repeat(2);
   const triangle = '<div class="g-log-unfold">▶</div>';
-  // constructor: ƒ Object()
-  // TODO 需要优化代码
   return funcNames
     .map((f) => {
       const name = f === "constructor" ? "Object" : f;
-      return `${bn}${b2}${triangle}${f}: f ${name}()`;
+      return `${triangle}${f}: f ${name}()`;
     })
     .join("</br>");
 };
 
-const objLog = (v, n = 1) => {
-  // {name: 'grammyli', name1: 'grammy', name3: 'g'}
-  const l1 = objectLine1(v);
-  const l2 = objectLine2(v, n);
+const objLog = (v, n = 1, i = 0) => {
+  const l1 = objectLine1(v) + '</br>';
+  const l2 = objectLine2(v, n, i);
   const l3 = objectLine3(v, n);
-  const l4 = objectProtoype(v, n);
-  const lines = [l1, l2, l3, l4];
-  const r = lines.join("</br>");
-  return r;
+  const lines = [l1, l2, l3,  ];
+  const r = lines.join("");
+  return [r, l1];
 };
 
-const templateObject = (value) => {
-  return `
-  <div class="g-log-item g-item" data-n="1">
-    <div class="g-log-unfold">▶</div>
-    <span class="g-log-number g-log-number-1">
-      ${value}
-    </span>
-  </div>
-  `;
+const templateObject = (value, line1) => {
+  const n = 1
+  const type = 'object'
+  const i = 0
+  let r =  templateItem(type, n, i, line1, value)
+  return r
 };
