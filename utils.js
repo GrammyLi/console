@@ -49,34 +49,6 @@ const templateItem = (type, layer, index, frontContent, endContent) => {
       `
 }
 
-/***
- * 
- * 
- * 
-        .g-red {
-            color: #b72619;
-        }
-
-        .g-gray {
-            color: #606367;
-        }
-
-        .g-black {
-            color: black;
-        }
-
-        .g-pruple {
-            color: #a05d9f;
-        }
-
-        .g-blue {
-            color: #17209f;
-        }
-
-        .g-light-purple {
-            color: #b17ab0;
-        }
- */
 const spanColor = (color, value) => {
   return `<span class="g-${color}">${value}</span>`
 }

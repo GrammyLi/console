@@ -1,12 +1,7 @@
 const arrayProtoype = (n) => {
-  const b = "&nbsp";
-  // 两个空格
-  const bn = b.repeat((n - 1) * 2);
   const funcNames = Object.getOwnPropertyNames(Array.prototype).sort((a, b) =>
     a.localeCompare(b)
   );
-  const b2 = "&nbsp".repeat(2);
-  // at: ƒ at()
   const triangle = '<div class="g-log-unfold">▶</div>';
   return funcNames
     .map((f) => {
