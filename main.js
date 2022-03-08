@@ -26,43 +26,28 @@ const unflodLog = (v) => {
 };
 
 const renderConsole = () => {
-  // let v = [1, 2, 3, [1, 2], [1, 3, 4, [1, 2]]];
-  // let v = {
-  //   name: "grammyli",
-  //   name1: "grammy",
-  //   name3: "g",
-  // };
-  // let v = {
-  //   name: 'g-console',
-  //   num: 15,
-  //   obj: {
-  //     objName: '123',
-  //     number: 123
-  //   }
-  // }
   let v = {
-    name: "g-console",
-    num: 123,
-    bool: false,
-    obj: {
-      number: 1234,
-      str: "gl",
-      objinner: {
-        key: 90,
-        str: "1223",
-      },
-    },
+    time: '2020-03-08',
+    name: 'grammyli',
+    codition: true,
     arr: [
       1,
-      3,
-      "str",
+      false,
       {
-        gramy: "oscar",
-        name: "g-console",
-        task: "codeing",
-        tasks: ["playing", true],
+        test: 'wo ui uv',
+        num: 321,
+        arr: [false, false, false]
       },
     ],
+    booL: false,
+    num: 34567,
+    arr2: [
+      false,
+      false
+    ],
+    obj: {
+      key: 'hello hello',
+    }
   };
   // let v = [12, 3456, "grammy"];
   const ctn = e(".g-log-container");
@@ -99,3 +84,7 @@ const __main = () => {
 };
 
 __main();
+
+
+// TODO 只需要关系 层级 和当前索引的位置，就可以确定当前展开节点的位置
+

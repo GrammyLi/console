@@ -14,6 +14,10 @@ const isObject = function (o) {
 
 const isString = value => typeof value === "string"
 
+const isNumber = value => typeof value === "number"
+
+const isBool = value => typeof value === "boolean"
+
 const appendHtml = (element, html) => {
   element.insertAdjacentHTML("beforeend", html);
 };
@@ -43,4 +47,36 @@ const templateItem = (type, layer, index, frontContent, endContent) => {
         </div>
       </div>
       `
+}
+
+/***
+ * 
+ * 
+ * 
+        .g-red {
+            color: #b72619;
+        }
+
+        .g-gray {
+            color: #606367;
+        }
+
+        .g-black {
+            color: black;
+        }
+
+        .g-pruple {
+            color: #a05d9f;
+        }
+
+        .g-blue {
+            color: #17209f;
+        }
+
+        .g-light-purple {
+            color: #b17ab0;
+        }
+ */
+const spanColor = (color, value) => {
+  return `<span class="g-${color}">${value}</span>`
 }

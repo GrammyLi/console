@@ -12,13 +12,21 @@ const objectLine1 = (v) => {
     let k = ks[i];
     let value = v[k];
     let ele = "";
+    k = spanColor('gray', k)
     if (isObject(value)) {
       ele = k + ": {…}";
     } else if (isArray(value)) {
       ele = `${k}: Array(${value.length})`;
     } else if (isString(value)) {
-      ele = `${k}: '${value}'`;
-    } else {
+      let red =  spanColor('red', value)
+      ele = `${k}: '${red}'`;
+    } else if (isNumber(value)) {
+      let blue =  spanColor('blue', value)
+      ele = `${k}: ${blue}`;
+    } else if (isBool(value)) {
+      let blue =  spanColor('blue', value)
+      ele = `${k}: ${blue}`;
+    } else{
       ele = `${k}: ${value}`;
     }
     eles.push(ele);
@@ -47,20 +55,25 @@ const objectLine2 = (v, n, index) => {
     let k = ks[i];
     let value = v[k];
     // TODO 代码待优化
+    const purple = spanColor('purple', k)
     if (isObject(value)) {
       let [r, l1] = objLog(value, n, i + 1);
-      let frontContent = k + ":"  + l1
-      let endContent = k + ':' + r
+      let frontContent = purple + ":"  + l1
+      let endContent = purple+ ':' + r
       line = templateItem(type, n, i + 1, frontContent, endContent)
     } else if (isArray(value)) {
       let [r, l1] = arrLog(value, n, i + 1);
-      let frontContent = k + ":"  + l1
-      let endContent =  k + ':' + r
+      let frontContent = purple + ":"  + l1
+      let endContent =  purple + ':' + r
       line = templateItem(type, n, i + 1, frontContent, endContent)
     } else if (isString(value)) {
-      line = bn + k + ":" + b2 + '"' + value + '"' + '</br>';
+      const red = spanColor('red', value)
+      line = bn + purple + ":" + b2 + '"' + red + '"' + '</br>';
+    } else if (isNumber(value) || isBool(value)) {
+      const blue = spanColor('blue', value)
+      line = bn + purple + ":" + b2 +  blue  + '</br>';
     } else {
-      line = bn + k + ":" + b2 + value + '</br>';
+      line = bn + purple + ":" + b2 + value + '</br>';
     }
     lines.push(line);
   }
@@ -73,7 +86,8 @@ const objectLine3 = (v, n) => {
   const index = Object.keys(v).length + 1
   const type = 'object'
   const l4 = objectProtoype(v, n)
-  let frontContent =  "[[Prototype]]: Object"
+  let gray = spanColor('gray', '[[Prototype]]')
+  let frontContent =  gray + ": Object"
   let endContent = `${frontContent}</br>${l4}`
   let r =  templateItem(type, n, index, frontContent, endContent)
   return r
@@ -88,7 +102,9 @@ const objectProtoype = (v, n) => {
   return funcNames
     .map((f) => {
       const name = f === "constructor" ? "Object" : f;
-      return `${triangle}${f}: f ${name}()`;
+      const purple = spanColor('purple', f)
+      const blue = spanColor('blue', 'f')
+      return `${triangle}${purple}: ${blue} ${name}()`;
     })
     .join("</br>");
 };
